@@ -29,17 +29,18 @@ public class Main {
                                 a = scan.nextInt();
                                 System.out.print("b - ");
                                 b = scan.nextInt();
-                                graph.addAdge(a, b);
+                                graph.addEdge(a, b);
                             }
                         }
                     }
                     break;
                 case 2:
+                    System.out.println("1.Граф\n" + "2.Диграф");
                     int y = scan.nextInt();
-                    if(y == 1) {
+                    if (y == 1) {
                         GraphFunctions.printGraph(graph);
                         System.out.println();
-                    }else {
+                    } else {
                         GraphFunctions.printGraph(digraph);
                         System.out.println();
                     }
@@ -80,7 +81,6 @@ public class Main {
                     GraphFunctions.clear(graph);
                     System.out.print("Введите максимальную вершину - ");
                     int q = scan.nextInt();
-                    System.out.println();
                     graph = (MatrixGraph) GraphFunctions.createRandomGraph(q);
                     System.out.println("Содан рандомный граф!");
                     break;
@@ -88,7 +88,6 @@ public class Main {
                     GraphFunctions.clear(graph);
                     System.out.print("Введите максимальную вершину - ");
                     int p = scan.nextInt();
-                    System.out.println();
                     digraph = (MatrixDigraph) GraphFunctions.createRandomDigraph(p);
                     System.out.println("Содан рандомный диграф!");
                     break;

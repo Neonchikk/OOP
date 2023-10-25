@@ -7,10 +7,10 @@ public interface Graph {
     int edgeCount();
 
     //Добавление ребра между вершинами с номерами v1 и v2
-    void addAdge(int v1, int v2);
+    void addEdge(int v1, int v2);
 
     //Удаление ребра/ребер между вершинами с номерами v1 и v2
-    void removeAdge(int v1, int v2);
+    void removeEdge(int v1, int v2);
 
     // v Номер вершины, смежные с которой необходимо найти
     // Объект, поддерживающий итерацию по номерам связанных с v вершин

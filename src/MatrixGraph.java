@@ -7,12 +7,13 @@ import java.util.Iterator;
 public class MatrixGraph implements Graph {
 
     private boolean[][] adjMatrix = null;
-    private int vCount = 0;
-    private int eCount = 0;
+    private int vCount;
+    private int eCount;
 
     public MatrixGraph(int vertexCount) {
         adjMatrix = new boolean[vertexCount][vertexCount];
         vCount = vertexCount;
+        eCount = 0;
     }
 
     @Override
@@ -26,7 +27,7 @@ public class MatrixGraph implements Graph {
     }
 
     @Override
-    public void addAdge(int v1, int v2) {
+    public void addEdge(int v1, int v2) {
         int maxV = Math.max(v1, v2);
         if (maxV >= vertexCount()) {
             adjMatrix = Arrays.copyOf(adjMatrix, maxV + 1);
@@ -45,7 +46,7 @@ public class MatrixGraph implements Graph {
     }
 
     @Override
-    public void removeAdge(int v1, int v2) {
+    public void removeEdge(int v1, int v2) {
         if (adjMatrix[v1][v2]) {
             adjMatrix[v1][v2] = false;
             eCount--;
@@ -53,7 +54,7 @@ public class MatrixGraph implements Graph {
     }
 
     @Override
-    public Iterable<Integer> adjacencies(int v) {
+    public Iterable<Integer> adjacencies(int v) {   // -
         return new Iterable<Integer>() {
             Integer nextAdj = null;
 

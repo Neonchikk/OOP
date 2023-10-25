@@ -8,10 +8,11 @@ import java.util.Scanner;
 public class GraphFunctions {   // библиотека графов
 
     private static Random random = new Random();
+    private static Scanner scanner;
 
     public static void printGraph(Graph graph) {
         if (graph == null) {
-            System.out.println("Графа нет,есть барон-Батон");
+            System.out.println("Графа нет");
             return;
         }
         System.out.println("\nГраф");
@@ -43,7 +44,7 @@ public class GraphFunctions {   // библиотека графов
         if (ver == 2) {
             edge = 1;
             graph = new MatrixGraph(ver);
-            graph.addAdge(0, 1);
+            graph.addEdge(0, 1);
         } else {
             edge = random.nextInt(ver - 1, ver * (ver - 1) / 2);
             graph = new MatrixGraph(ver);
@@ -52,8 +53,8 @@ public class GraphFunctions {   // библиотека графов
                 int a = random.nextInt(0, ver);
                 int b = random.nextInt(0, ver);
                 if (!graph.isAdj(a, b) && !graph.isAdj(b, a) && a != b) {
-                    graph.addAdge(b, a);
-                    graph.addAdge(a, b);
+                    graph.addEdge(b, a);
+                    graph.addEdge(a, b);
                     count++;
                 }
             }
@@ -68,7 +69,7 @@ public class GraphFunctions {   // библиотека графов
         if (ver == 2) {
             edge = 1;
             digraph = new MatrixDigraph(ver);
-            digraph.addAdge(0, 1);
+            digraph.addEdge(0, 1);
         } else {
             edge = random.nextInt(ver - 1, ver * (ver - 1) / 2);
             digraph = new MatrixDigraph(ver);
@@ -77,7 +78,7 @@ public class GraphFunctions {   // библиотека графов
                 int a = random.nextInt(0, ver);
                 int b = random.nextInt(0, ver);
                 if (!digraph.isAdj(a, b) && a != b) {
-                    digraph.addAdge(a, b);
+                    digraph.addEdge(a, b);
                     count++;
                 }
             }
@@ -90,7 +91,12 @@ public class GraphFunctions {   // библиотека графов
     }
 
     public static Graph readGraphFromFile(String fileName) throws Exception {
-        Scanner scanner = new Scanner(new FileInputStream(fileName));
+        try {
+            scanner = new Scanner(new FileInputStream(fileName + ".txt"));
+        } catch (Exception e) {
+            System.out.println("Файла " + fileName + " не существует!!");
+            return null;
+        }
         String line = "";
         int vertexCount = Integer.parseInt(scanner.nextLine());
         int edgeCount = Integer.parseInt(scanner.nextLine());
@@ -105,7 +111,7 @@ public class GraphFunctions {   // библиотека графов
             if (line.matches("\\d+-\\d+")) {
                 v1 = Integer.parseInt(line.substring(0, line.indexOf("-")).trim());
                 v2 = Integer.parseInt(line.substring(line.indexOf("-") + 1).trim());
-                graph.addAdge(v1, v2);
+                graph.addEdge(v1, v2);
                 count++;
             } else {
                 throw new Exception("Неправильно составлена строка \"" + line + "\" для ввода ребра!");
@@ -115,7 +121,12 @@ public class GraphFunctions {   // библиотека графов
     }
 
     public static Digraph readDigraphFromFile(String fileName) throws Exception {
-        Scanner scanner = new Scanner(new File(fileName));
+        try {
+            scanner = new Scanner(new File(fileName + ".txt"));
+        } catch (Exception e) {
+            System.out.println("Файла " + fileName + " не существует!!");
+            return null;
+        }
         String line = "";
         int vertexCount = Integer.parseInt(scanner.nextLine());
         int edgeCount = Integer.parseInt(scanner.nextLine());
@@ -130,7 +141,7 @@ public class GraphFunctions {   // библиотека графов
             if (line.matches("\\d+->\\d+")) {
                 v1 = Integer.parseInt(line.substring(0, line.indexOf("-")).trim());
                 v2 = Integer.parseInt(line.substring(line.indexOf(">") + 1).trim());
-                graph.addAdge(v1, v2);
+                graph.addEdge(v1, v2);
                 count++;
             } else {
                 throw new Exception("Неправильно составлена строка \"" + line + "\" для ввода ребра!");
@@ -139,24 +150,26 @@ public class GraphFunctions {   // библиотека графов
         return graph;
     }
 
-    public static void writeToFile(Graph graph,String filename) throws FileNotFoundException {
-        PrintStream out = new PrintStream(filename);
+    public static void writeToFile(Graph graph, String filename) throws FileNotFoundException {
+        PrintStream out = new PrintStream(filename + ".txt");
         out.println(graph.vertexCount());
         out.println(graph.edgeCount());
-        if (graph instanceof Digraph){
-            for (int v1 = 0;v1< graph.vertexCount();v1++){
-                for (int v2 : graph.adjacencies(v1)){
-                    out.printf("%s->%s\n",v1,v2);
+        if (graph instanceof Digraph) {
+            for (int v1 = 0; v1 < graph.vertexCount(); v1++) {
+                for (int v2 : graph.adjacencies(v1)) {
+                    out.printf("%s->%s\n", v1, v2);
                 }
             }
+            out.close();
             return;
         }
         for (int v1 = 0; v1 < graph.vertexCount(); v1++) {
             for (int v2 = v1; v2 < graph.vertexCount(); v2++) {
                 if (graph.isAdj(v1, v2)) {
-                    out.printf("%s-%s\n",v1,v2);
+                    out.printf("%s-%s\n", v1, v2);
                 }
             }
         }
+        out.close();
     }
 }
